@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from 'react'
 
 function App() {
@@ -6,50 +7,49 @@ function App() {
 
   const [cardNumber, setCardNumber] = useState('')
   const [cardNumberError, setCardNumberError] = useState('')
+
+  const [month, setMonth] = useState('')
+  const [year, setYear] = useState('')
+  const [cvc, setCvc] = useState('')
   
-    const handleSubmit = (event) => {
-    event.preventDefault();
-    // Regular expression to match alphabetic characters and some special characters
-    const nameRegex = /^[a-zA-ZÀ-ÿ' -]+$/;
-  
-    if(name=='') {
-      setnameError("Can't be blank")
-    }else if (!nameRegex.test(name)) {
-      setnameError('Please enter a valid name without numbers');
-      return;
-    } 
-    // Proceed with submission
-    console.log('Name submitted:', name);
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      // Regular expression to match alphabetic characters and some special characters
+      const nameRegex = /^[a-zA-ZÀ-ÿ' -]+$/;
+    
+      if(name=='') {
+        setnameError("Can't be blank")
+      }else if (!nameRegex.test(name)) {
+        setnameError('Please enter a valid name without numbers');
+        return;
+      } 
   }
 
-  const handleInputChange = (event) => {
+  const handleNameInputChange = (event) => {
     setName(event.target.value);
   }
 
   const handleCardInputChange = (event) => {
     // This will limit the input to 16 characters
-    const input = event.target.value.substring(0, 16)
-    const formattedInput = formattedCardInput(input);
-    setCardNumber(formattedInput)
+    const input = event.target.value.replace(/\D/g, '').substring(0, 16); // Remove non-numeric characters and limit to 16 characters
+    const formattedInput = input.replace(/(\d{4})(\d{1,4})?(\d{1,4})?(\d{1,4})?/, '$1 $2 $3 $4').trim(); // Format the input
+    setCardNumber(formattedInput);
   } 
 
-  const formattedCardInput = (input) => {
-    // Array for storing every 4 digit numbers
-    const cardInput = []
-    
-    // Loop inside the input and increment by 4
-    for (let i = 0; i <input.length; i+=4) {
-      // [1] = 1234 
-      cardInput.push(input.substring(i, i+4)) 
-      console.log(cardInput)
-      console.log(cardInput.length)
-      console.log(i)
-    }
-    return cardInput.join(' ')
+  const handleMonthInput = (event) => {
+    const input = event.target.value
+    const formattedValue = twoDigitFormat(input)
+    setMonth(formattedValue) 
   }
 
-
-
+  const twoDigitFormat = (input) => {
+    let numberInput = Number(input)
+     if (!isNaN(numberInput) && numberInput < 10) {
+      // If input is a single digit, prepend '0'
+      return "0" + input;
+    } 
+    return input
+  }
 
   return (
     <main>
@@ -75,18 +75,23 @@ function App() {
             <label htmlFor="name">Cardholder Name</label>
             <input 
               type="text" 
+              name="name"
+              id="name"
               value={name}
-              onChange={handleInputChange}
+              onChange={handleNameInputChange}
               placeholder='e.g. Jane Appleseed' 
               className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'/>
             <p className='text-Red'>{nameError}</p>
           </div>
           <div className='mb-3'>
-            <label htmlFor="">Card Number</label>
+            <label htmlFor="card_number">Card Number</label>
             <input 
               type="text" 
+              name="card_number"
+              id="card_number"
               placeholder='e.g. 1234 5678 9123 0000' 
               className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+              maxLength="19"
               value={cardNumber}
               onChange={handleCardInputChange}
             />
@@ -98,18 +103,48 @@ function App() {
                 <p>Exp. Date (MM/YY)</p>
                 <div className='flex gap-2'>
                   <div className='w-1/2'>
-                    <input type="text" placeholder='MM' className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'/>
+                    <input 
+                      type="text" 
+                      name='month'
+                      id='month'
+                      placeholder='MM' 
+                      className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                      // maxLength="2"
+                      value={month}
+                      onChange={handleMonthInput}
+                      required
+                    />
                     <p></p>
                   </div>
                   <div className='w-1/2'>
-                    <input type="text" placeholder='YY' className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'/>
+                    <input 
+                      type="text"
+                      name='year' 
+                      id='year'
+                      placeholder='YY' 
+                      className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                      maxLength="2"
+                      // onChange={handleYearInput}
+                      value={year}
+                      required
+                    />
                     <p></p>
                   </div>
                 </div>
               </div> 
               <div className='w-1/2'>
-                <label htmlFor="">CVC</label>
-                <input type="text" placeholder='e.g. 123' className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'/>
+                <label htmlFor="cvc">CVC</label>
+                <input 
+                  type="text" 
+                  name='cvc'
+                  id='cvc'
+                  placeholder='e.g. 123' 
+                  className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                  maxLength="3"
+                  // onChange={handleCvcInput}
+                  value={cvc}
+                  required
+                />
               </div>
             </div>
           </div>
