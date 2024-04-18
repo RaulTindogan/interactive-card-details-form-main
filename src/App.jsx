@@ -14,23 +14,53 @@ function App() {
 
   const [monthError, setMonthError] = useState('')
   const [yearError, setYearError] = useState('')
-
+  const [cvcError, setCvcError] = useState('')
+  const [complete, setComplete] = useState(false)
   
   const handleSubmit = (event) => {
       event.preventDefault();
-      // Regular expression to match alphabetic characters and some special characters
-      const nameRegex = /^[a-zA-ZÀ-ÿ' -]+$/;
-    
-      if(name=='') {
-        setnameError("Can't be blank")
-      }else if (!nameRegex.test(name)) {
-        setnameError('Please enter a valid name without numbers');
-        return;
-      } 
+      let error = false
+      const emptyError = "Can't be blank"
+      const regex = /^\s*$/;
+
+      if(name == '' || regex.test(name)) {
+        setnameError(emptyError)
+        error = true
+      }
+
+      if(month == '') {
+        setMonthError(emptyError)
+        error = true
+      }
+
+      if(year == '') {
+        setYearError(emptyError)
+        error = true
+      }
+
+      if(cardNumber == '') {
+        setCardNumberError(emptyError)
+        error = true
+      }
+
+      if(cardNumber.length < 19) {
+        setCardNumberError("Invalid Card Number")
+        error = true
+      }
+
+      if(cvc == '') {
+        setCvcError(emptyError)
+        error = true
+      }
+
+      if(error == false) {
+        setComplete(true)
+      }
   } 
 
   const handleNameInputChange = (event) => {
-    setName(event.target.value);
+    const input = event.target.value.replace(/[^A-Za-z\s]/g, '')
+    setName(input);
   }
 
   const handleCardInputChange = (event) => {
@@ -56,24 +86,24 @@ function App() {
   }
 
   const twoDigitFormat = (input, type) => {
-   if(type === "month") {
+   if(type == "month") {
     if (input > 12) {
       setMonthError('Invalid Month')
     } else {
-      if(input.length === 1) {
+      if(input.length == 1) {
         setMonth(input.padStart(2, '0'))
       } else {
         setMonth(input)
       }
     }
-   } else {
+   } else if(type == "year"){
       if (input > 31) {
         setYearError('Invalid Month')
       } else {
         if(input.length === 1) {
-          setMonth(input.padStart(2, '0'))
+          setYear(input.padStart(2, '0'))
         } else {
-          setMonth(input)
+          setYear(input)
         }
       }
    } 
@@ -92,28 +122,80 @@ function App() {
 
 
   return (
-    <main>
-      <section>
-        <article className="text-White py-10 px-5 bg-[url('./src/assets/images/bg-main-mobile.png')] bg-cover bg-no-repeat flex flex-col items-end relative">
-          <div className='w-[70%] max-w-[400px] relative flex justify-end items-center'>
-            <img src="./src/assets/images/bg-card-back.png" alt="" />
-            <p className='absolute right-6 text-[12px] tracking-[.2rem]'>000</p>
-          </div>
-          <div className="w-[70%] max-w-[400px] bg-[url('./src/assets/images/bg-card-front.png')] bg-no-repeat bg-cover p-5 absolute left-5 rounded-xl mt-[20%]">
-            <div className='mb-8'>
-              <img src="./src/assets/images/card-logo.svg" alt="" className='w-[3rem]'/>
+    <main className='h-[100vh] font-Space-Grotesk max-w-[1440px]'>
+      <section className='h-full flex flex-col lg:flex-row'>
+        <article className="
+          flex 
+          justify-center 
+          items-center 
+          text-White 
+          py-10 
+          px-5 
+          bg-[url('./src/assets/images/bg-main-mobile.png')] 
+          bg-cover bg-no-repeat
+          lg:w-[30%]
+          lg:items-center
+          lg:pl-[5%]
+          xl:pl-[10%]
+        ">
+          <div className='
+            flex 
+            flex-col 
+            items-end 
+            relative 
+            sm:w-[550px] 
+            md:w-[650px]
+            lg:flex-col-reverse
+            lg:pl-[3rem]
+          '>
+            <div className='
+              w-[70%] 
+              max-w-[350px] 
+              relative 
+              flex 
+              justify-end 
+              items-center
+              lg:w-[380px]
+              lg:absolute
+              lg:top-[1rem]
+              lg:left-[3rem]
+            '>
+              <img src="./src/assets/images/bg-card-back.png" alt="" />
+              <p className='absolute right-[10%] text-[12px] tracking-[.2rem] md:text-xl md:right-[12%]'>{cvc}</p>
             </div>
-            <h1 className='text-[1.2rem] mb-3'>0000 0000 0000 0000</h1>
-            <div className='flex justify-between'>
-              <p>Jane Appleseed</p>
-              <p>00/00</p>
+            <div 
+              className="
+                w-[75%] 
+                max-w-[350px] 
+                bg-[url('./src/assets/images/bg-card-front.png')] 
+                bg-no-repeat 
+                bg-cover 
+                p-5 
+                absolute 
+                left-[5%] 
+                rounded-xl 
+                mt-[25%] 
+                sm:px-[2rem]
+                md:left-[10%] 
+                md:mt-[20%]
+                lg:left-[1rem]
+                lg:w-[380px]
+              ">
+              <div className='mb-7'>
+                <img src="./src/assets/images/card-logo.svg" alt="" className='w-[3rem]'/>
+              </div>
+              <h1 className='mb-3 text-sm md:text-xl md:mb-10'>{cardNumber}</h1>
+              <div className='flex justify-between'>
+                <p className='text-sm uppercase md:text-xl'>{name}</p>
+                <p className='text-sm md:text-xl'>{month+"/"+year}</p>
+              </div>
             </div>
           </div>
         </article>
-        <article className='pt-[7rem] px-5'>
-          <form onSubmit={handleSubmit} className='w-full'>
+        <article className={`flex justify-center items-center flex-grow pt-[5rem] py-5 px-5 md:pt-[7rem] ${complete? ' hidden': ' block'}`}>
+          <form onSubmit={handleSubmit} className='w-full max-w-[420px]'>
             <div className={`mb-3`}>
-              <label htmlFor="name">Cardholder Name</label>
+              <label htmlFor="name" className='text-sm'>Cardholder Name</label>
               <input 
                 type="text" 
                 name="name"
@@ -121,11 +203,21 @@ function App() {
                 value={name}
                 onChange={handleNameInputChange}
                 placeholder='e.g. Jane Appleseed' 
-                className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'/>
+                className='
+                  w-full 
+                  py-1 
+                  px-2 
+                  rounded-md 
+                  border-[1px] 
+                  border-Dark-grayish-violet
+                  outline-none
+                '
+                required
+              />
               <p className='text-Red'>{nameError}</p>
             </div>
             <div className='mb-3'>
-              <label htmlFor="card_number">Card Number</label>
+              <label htmlFor="card_number" className='text-sm'>Card Number</label>
               <input 
                 type="text" 
                 name="card_number"
@@ -135,13 +227,14 @@ function App() {
                 maxLength="19"
                 value={cardNumber}
                 onChange={handleCardInputChange}
+                required
               />
-              <p></p>
+              <p className='text-Red'>{cardNumberError}</p>
             </div>
             <div className='w-full mb-5'>     
               <div className='flex gap-2'>
                 <div className='w-1/2'>
-                  <p>Exp. Date (MM/YY)</p>
+                  <p className='text-sm'>Exp. Date (MM/YY)</p>
                   <div className='flex gap-2'>
                     <div className='w-1/2'>
                       <input 
@@ -176,7 +269,7 @@ function App() {
                   </div>
                 </div> 
                 <div className='w-1/2'>
-                  <label htmlFor="cvc">CVC</label>
+                  <p className='text-sm'>CVC</p>
                   <input 
                     type="text" 
                     name='cvc'
@@ -189,15 +282,17 @@ function App() {
                     value={cvc}
                     required
                   />
+                  <p>{cvcError}</p>
                 </div>
               </div>
             </div>
-            <button type="submit" className='text-ceter bg-Very-dark-violet text-White w-full rounded-md py-2'>Confirm</button>
+            <button 
+              type="submit" 
+              className='text-ceter bg-Very-dark-violet text-White w-full rounded-md py-2'
+            >Confirm</button>
           </form>
         </article>
-      </section>
-      <section>
-        <article>
+        <article className={`flex-grow flex-col justify-center items-center ${complete? 'flex': "hidden"}`}>
           <div>
             <img src="./src/assets/images/icon-complete.svg" alt="" />
           </div>
@@ -211,7 +306,6 @@ function App() {
         </article>
       </section>
     </main> 
-
   )
 }
 
