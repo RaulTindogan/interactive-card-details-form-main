@@ -9,6 +9,7 @@ export default {
     // ### Primary
     'gradient1': 'hsl(249, 99%, 64%)',
     'gradient2': 'hsl(278, 94%, 30%)',
+    'trygradient': "linear-gradient(to right, hsl(249, 99%, 64%), hsl(278, 94%, 30%)",
     'Red': 'hsl(0, 100%, 66%)',
 
     // ### Neutral

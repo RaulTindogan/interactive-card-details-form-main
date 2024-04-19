@@ -133,6 +133,7 @@ function App() {
           px-5 
           bg-[url('./src/assets/images/bg-main-mobile.png')] 
           bg-cover bg-no-repeat
+          lg:bg-[url('./src/assets/images/bg-main-desktop.png')] 
           lg:w-[30%]
           lg:items-center
           lg:pl-[5%]
@@ -182,7 +183,7 @@ function App() {
                 lg:w-[380px]
               ">
               <div className='mb-7'>
-                <img src="./src/assets/images/card-logo.svg" alt="" className='w-[3rem]'/>
+                <img src="./src/assets/images/card-logo.svg" alt="Card Logo" className='w-[3rem]'/>
               </div>
               <h1 className='mb-3 text-sm md:text-xl md:mb-10'>{cardNumber}</h1>
               <div className='flex justify-between'>
@@ -203,7 +204,7 @@ function App() {
                 value={name}
                 onChange={handleNameInputChange}
                 placeholder='e.g. Jane Appleseed' 
-                className='
+                className={`
                   w-full 
                   py-1 
                   px-2 
@@ -211,7 +212,9 @@ function App() {
                   border-[1px] 
                   border-Dark-grayish-violet
                   outline-none
-                '
+                  focus:border-trygradient
+                  ${nameError?" border-Red": ""}
+                `}
                 required
               />
               <p className='text-Red'>{nameError}</p>
@@ -223,7 +226,7 @@ function App() {
                 name="card_number"
                 id="card_number"
                 placeholder='e.g. 1234 5678 9123 0000' 
-                className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                className={`w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet outline-none ${cardNumberError?" border-Red": ""}`}
                 maxLength="19"
                 value={cardNumber}
                 onChange={handleCardInputChange}
@@ -242,14 +245,14 @@ function App() {
                         name='month'
                         id='month'
                         placeholder='MM' 
-                        className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                        className={`w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet outline-none ${monthError?" border-Red": ""}`}
                         maxLength="2"
                         value={month}
                         onChange={handleMonthInput}
                         onBlur={()=>{twoDigitFormat(month, "month")}}
                         required
                       />
-                      <p>{monthError}</p>
+                      <p className='text-sm text-Red'>{monthError}</p>
                     </div>
                     <div className='w-1/2'>
                       <input 
@@ -257,14 +260,14 @@ function App() {
                         name='year' 
                         id='year'
                         placeholder='YY' 
-                        className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                        className={`w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet outline-none ${yearError?" border-Red": ""}`}
                         maxLength="2"
                         onChange={handleYearInput}
                         onBlur={()=>{twoDigitFormat(year, "year")}}
                         value={year}
                         required
                       />
-                      <p>{yearError}</p>
+                      <p className='text-sm text-Red'>{yearError}</p>
                     </div>
                   </div>
                 </div> 
@@ -275,14 +278,14 @@ function App() {
                     name='cvc'
                     id='cvc'
                     placeholder='e.g. 123' 
-                    className='w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet'
+                    className={`w-full py-1 px-2 rounded-md border-[1px] border-Dark-grayish-violet outline-none ${cvcError?" border-Red": ""}`}
                     maxLength="3"
                     onChange={handleCvcInput}
                     onBlur={()=>{threeDigitFormat(cvc)}}
                     value={cvc}
                     required
                   />
-                  <p>{cvcError}</p>
+                  <p className='text-sm text-Red'>{cvcError}</p>
                 </div>
               </div>
             </div>
@@ -292,16 +295,18 @@ function App() {
             >Confirm</button>
           </form>
         </article>
-        <article className={`flex-grow flex-col justify-center items-center ${complete? 'flex': "hidden"}`}>
-          <div>
-            <img src="./src/assets/images/icon-complete.svg" alt="" />
-          </div>
-          <div>
-            <p>THANK YOU!</p>
-            <p>We've added your card details</p>
-          </div>
-          <div>
-            <button>Continue</button>
+        <article className={`flex-grow flex-col justify-center items-center pb-5 pt-10 sm:pb-10 sm:pt-[5rem] md:pt-[10rem] lg:pt-0 ${complete? 'flex': "hidden"}`}>
+          <div className="max-w-[550px]">
+            <div className='mb-5'>
+              <img src="./src/assets/images/icon-complete.svg" alt="Completed Image" className='block mx-auto'/>
+            </div>
+            <div className='text-center font-[600]'>
+              <p className='text-2xl text-Very-dark-violet mb-2'>THANK YOU!</p>
+              <p className='text-Dark-grayish-violet mb-5'>We've added your card details</p>
+            </div>
+            <div className='w-full'>
+              <button className='bg-Very-dark-violet w-full text-White py-2 rounded-md'>Continue</button>
+            </div>
           </div>
         </article>
       </section>
