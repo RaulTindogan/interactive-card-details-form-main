@@ -131,9 +131,9 @@ function App() {
           text-White 
           py-10 
           px-5 
-          bg-[url('./src/assets/images/bg-main-mobile.png')] 
+          bg-[url('https://raw.githubusercontent.com/RaulTindogan/interactive-card-details-form-main/main/src/assets/images/bg-main-mobile.png')] 
           bg-cover bg-no-repeat
-          lg:bg-[url('./src/assets/images/bg-main-desktop.png')] 
+          lg:bg-[url('https://raw.githubusercontent.com/RaulTindogan/interactive-card-details-form-main/main/src/assets/images/bg-main-desktop.png')] 
           lg:w-[30%]
           lg:items-center
           lg:pl-[5%]
@@ -161,14 +161,14 @@ function App() {
               lg:top-[1rem]
               lg:left-[3rem]
             '>
-              <img src="./src/assets/images/bg-card-back.png" alt="" />
+              <img src="https://raw.githubusercontent.com/RaulTindogan/interactive-card-details-form-main/main/src/assets/images/bg-card-back.png" alt="" />
               <p className='absolute right-[10%] text-[12px] tracking-[.2rem] md:text-xl md:right-[12%]'>{cvc}</p>
             </div>
             <div 
               className="
                 w-[75%] 
                 max-w-[350px] 
-                bg-[url('./src/assets/images/bg-card-front.png')] 
+                bg-[url('https://raw.githubusercontent.com/RaulTindogan/interactive-card-details-form-main/main/src/assets/images/bg-card-front.png')] 
                 bg-no-repeat 
                 bg-cover 
                 p-5 
@@ -183,7 +183,7 @@ function App() {
                 lg:w-[380px]
               ">
               <div className='mb-7'>
-                <img src="./src/assets/images/card-logo.svg" alt="Card Logo" className='w-[3rem]'/>
+                <img src="https://raw.githubusercontent.com/RaulTindogan/interactive-card-details-form-main/7cab0e44d8aa867dd4837ecc017dfbc624da2f9e/src/assets/images/card-logo.svg" alt="Card Logo" className='w-[3rem]'/>
               </div>
               <h1 className='mb-3 text-sm md:text-xl md:mb-10'>{cardNumber}</h1>
               <div className='flex justify-between'>
@@ -298,7 +298,7 @@ function App() {
         <article className={`flex-grow flex-col justify-center items-center pb-5 pt-10 sm:pb-10 sm:pt-[5rem] md:pt-[10rem] lg:pt-0 ${complete? 'flex': "hidden"}`}>
           <div className="max-w-[550px]">
             <div className='mb-5'>
-              <img src="./src/assets/images/icon-complete.svg" alt="Completed Image" className='block mx-auto'/>
+              <img src="https://raw.githubusercontent.com/RaulTindogan/interactive-card-details-form-main/7cab0e44d8aa867dd4837ecc017dfbc624da2f9e/src/assets/images/icon-complete.svg" alt="Completed Image" className='block mx-auto'/>
             </div>
             <div className='text-center font-[600]'>
               <p className='text-2xl text-Very-dark-violet mb-2'>THANK YOU!</p>
